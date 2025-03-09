@@ -197,9 +197,9 @@ Here are the main CLI commands available for managing your ReadKeeper:
 
 ## Models
 
-Book Model (Defined in models.py)
+## Book Model (Defined in models.py)
 
-Attributes:
+## Attributes:
 
  id: Integer (Primary Key)
 
@@ -214,7 +214,7 @@ Attributes:
  genres: Relationship with the Genre model through the book_genres table
 
 
-Methods:
+## Methods:
 
  create: Creates a new book and saves it to the database.
 
@@ -228,7 +228,7 @@ Methods:
 
  Author Model (Defined in models.py)
 
-Attributes:
+## Attributes:
 
  id: Integer (Primary Key)
 
@@ -236,7 +236,7 @@ Attributes:
 
  books: Relationship with the Book model
 
-Methods:
+## Methods:
 
  create: Adds a new author.
 
@@ -248,7 +248,7 @@ Methods:
 
  Genre Model (Defined in models.py)
 
-Attributes:
+## Attributes:
 
  id: Integer (Primary Key)
 
@@ -256,7 +256,7 @@ Attributes:
 
  books: Relationship with the Book model
 
-Methods:
+## Methods:
 
  create: Adds a new genre.
 
