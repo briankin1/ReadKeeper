@@ -171,7 +171,7 @@ Here are the main CLI commands available for managing your ReadKeeper library:
   
    Add a new author:
     ```bash
-    python main.py add-author --name "Osho"
+    python main.py add-author --name "name of the auther"
     ```
 
    Adds authors in the library.
