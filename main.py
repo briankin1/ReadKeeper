@@ -1,4 +1,4 @@
-# CLI file for my book my personal book collection
+# CLI file for my personal book collection
 
 import click
 from models import Author, Book, Genre, Session, engine, create_tables
