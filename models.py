@@ -1,4 +1,4 @@
-
+# This is the main database for my ReadKeeper app
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
@@ -11,13 +11,13 @@ class Author(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
     
-    # One-to-many relationship (One author to many books)
+    # One-to-many relationship - link authors to their books lol
     books = relationship('Book', back_populates='author')
 
     def __repr__(self):
         return f"<Author(name={self.name})>"
 
-    # ORM Methods
+    # ORM Methods - Might consider spliting this into a separate file
     @classmethod
     def create(cls, session, name):
         author = cls(name=name)
@@ -49,7 +49,7 @@ class Genre(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
     
-    # Many-to-many relationship (Books to many genres)
+    # Many-to-many relationship-Books to many genres- kind of tricky
     books = relationship("Book", secondary="book_genres", back_populates="genres")
 
 
@@ -90,26 +90,29 @@ class Book(Base):
     publication_year = Column(Integer, nullable=False)
     author_id = Column(Integer, ForeignKey('authors.id'), nullable=False)
     
+    # Relationships - took me a while to get right
     author = relationship("Author", back_populates="books")
     genres = relationship("Genre", secondary="book_genres", back_populates="books")
 
 
     def __repr__(self):
+        #added author name for debbugging output
         return f"<Book(title={self.title}, year={self.publication_year}, author={self.author.name})>"
 
     # ORM Methods
     @classmethod
     def create(cls, session, title, publication_year, author_id, genre_ids):
+        # Create new book instance
         book = cls(title=title, publication_year=publication_year, author_id=author_id)
         session.add(book)
         session.commit()
 
-        # Add genres to the book
+        # This Adds genres to a book 
         for genre_id in genre_ids:
             genre = session.query(Genre).get(genre_id)
-            if genre:
+            if genre: # makes sure genre exists]
                 book.genres.append(genre)
-        session.commit()
+        session.commit() # commit again for genres
         return book
 
     @classmethod
@@ -135,15 +138,16 @@ class Book(Base):
         if not book:
             return None
 
+        # Updates whatever fields padssed
         if title:
             book.title = title
         if publication_year:
             book.publication_year = publication_year
         if author_id:
             book.author_id = author_id
+        # genre updates still - quite annoying to handle
         if genre_ids is not None:
-            # Clear current genres and add new ones
-            book.genres.clear()
+            book.genres.clear() # resets genres
             for genre_id in genre_ids:
                 genre = session.query(Genre).get(genre_id)
                 if genre:
@@ -153,17 +157,18 @@ class Book(Base):
         return book
 
 
-# Association table for the many-to-many relationship between Book and Genre
+# junction/association table for the many-to-many relationship btwn books $ genres
 class BookGenres(Base):
     __tablename__ = 'book_genres'
     
     book_id = Column(Integer, ForeignKey('books.id'), primary_key=True)
     genre_id = Column(Integer, ForeignKey('genres.id'), primary_key=True)
 
-DATABASE_URL = "sqlite:///readkeeer.db"
+DATABASE_URL = "sqlite:///readkeeer.db"   # my database url
 
 engine = create_engine(DATABASE_URL)
 Session = sessionmaker(bind=engine)
 
 def create_tables():
+    # Creates all tables - run this when setting up db
     Base.metadata.create_all(engine)
