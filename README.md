@@ -110,6 +110,8 @@ add_genre: Adds a genre to the library.
 
 list_genres: Lists all genres.
 
+View Books by Genre (e.g., genre with ID 1)
+
 
 ## models.py
 
@@ -128,7 +130,7 @@ Each model is built using SQLAlchemy’s Object-Relational Mapping (ORM) system,
 
 ## CLI Commands
 
-Here are the main CLI commands available for managing your ReadKeeper:
+Here are the main CLI commands available for managing your ReadKeeper library:
 
 ## Books
 
@@ -151,7 +153,7 @@ Here are the main CLI commands available for managing your ReadKeeper:
 3. Update book:
 
     ```bash
-    python main.py update-book --id 1 --title "Nineteen Eighty-Four" --year 1950
+    python main.py update-book --id 1 --title "Updated-book-title" --year 1950
     ```
 
     Updates the title and year of the book with the specified ID.
@@ -171,6 +173,15 @@ Here are the main CLI commands available for managing your ReadKeeper:
     ```bash
     python main.py add-author --name "Osho"
     ```
+
+   Adds authors in the library.
+
+
+6. List all authors:
+   
+   ```bash
+   python main.py list-authors
+   ```
 
    Lists all authors in the library.
 
@@ -193,6 +204,12 @@ Here are the main CLI commands available for managing your ReadKeeper:
     ```
 
     Lists all genres in the library.
+
+8. View Books by Genre (e.g., genre with ID 1):
+
+     ```bash
+     python main.py view-books-by-genre --genre_id 1
+     ```
 
 
 ## Models

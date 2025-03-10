@@ -1,5 +1,9 @@
 import click
-from models import Author, Book, Genre, Session, create_tables
+from models import Author, Book, Genre, Session, engine, create_tables
+from sqlalchemy.orm import sessionmaker
+
+Session = sessionmaker(bind=engine)
+session = Session()
 
 # Create tables
 create_tables()
@@ -41,17 +45,34 @@ def list_books():
     
 # Update Book command
 @click.command()
-@click.option('--id', prompt='Book ID', help='The ID of the book to update.')
-@click.option('--title', prompt='New book title', help='The new title of the book.')
-def update_book(id, title):
-    session = get_session()
-    book = Book.find_by_id(session, id)
-    if book:
-        book.title = title
-        session.commit()
-        click.echo(f"Book {id} updated to '{title}'")
-    else:
-        click.echo(f"Book {id} not found.")
+@click.option('--id', prompt='Book ID', help='ID of the book to update.')
+@click.option('--title', prompt='New Title', help='New title of the book.')
+@click.option('--author', prompt='New Author', help='New author of the book.')
+@click.option('--year', prompt='New Publication Year', help='New publication year of the book.', type=int)
+@click.option('--genres', prompt='New Genre IDs', help='Comma separated list of genre IDs to associate with the book.', type=str)
+def update_book(id, title, author, year, genres):
+    # Fetch the book from the database
+    book = session.query(Book).filter(Book.id == id).first()
+
+    if not book:
+        print(f"Book with ID {id} not found.")
+        return
+
+    # Update the book details
+    book.title = title
+    book.author.name = author  # Assuming the Author is being updated as well
+    book.publication_year = year
+
+    # Update genres
+    if genres:
+        genre_ids = [int(genre_id.strip()) for genre_id in genres.split(',')]
+        genres_to_add = session.query(Genre).filter(Genre.id.in_(genre_ids)).all()
+        book.genres = genres_to_add
+
+    # Commit the changes to the database
+    session.commit()
+    print(f"Book {id} updated successfully!")
+
 
 # Delete Book command
 @click.command()
