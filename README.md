@@ -22,7 +22,7 @@ To set up ReadKeeper application, follow the steps below:
  1. Clone the repository:
     ```bash
     git clone https://github.com/briankin1/ReadKeeper.git
-    cd personal-library-manager
+    cd ReadKeeper
     ```
     
 
