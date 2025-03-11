@@ -98,7 +98,7 @@ add_book: Adds a new book to the library.
 
 list_books: Displays all books in the library.
 
-update_book: Allows updating details of a book (title, year, genres).
+update_book: Allows updating details of a book (title, year, genres, author).
 
 delete_book: Deletes a book from the library.
 
@@ -153,10 +153,10 @@ Here are the main CLI commands available for managing your ReadKeeper library:
 3. Update book:
 
     ```bash
-    python main.py update-book --id 1 --title "Updated-book-title" --year 1950
+    python main.py update-book --id 1 
     ```
 
-    Updates the title and year of the book with the specified ID.
+    Updates the neccessary details of the book with the specified ID.
 
 
 4. Delete book:
@@ -186,18 +186,18 @@ Here are the main CLI commands available for managing your ReadKeeper library:
    Lists all authors in the library.
 
 
-6. Genres
+7. Genres
 
    Add a new genre:
 
     ```bash
-    python main.py add-genre --name "Dystopian"
+    python main.py add-genre --name "name of the genre"
    ```
 
    Adds a new author with the name
 
 
-7. list genres:
+8. list genres:
     
     ```bash
     python main.py list-genres
@@ -205,7 +205,7 @@ Here are the main CLI commands available for managing your ReadKeeper library:
 
     Lists all genres in the library.
 
-8. View Books by Genre (e.g., genre with ID 1):
+9. View Books by Genre (e.g., genre with ID 1):
 
      ```bash
      python main.py view-books-by-genre --genre_id 1
