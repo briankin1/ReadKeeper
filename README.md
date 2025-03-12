@@ -136,7 +136,7 @@ Here are the main CLI commands available for managing your ReadKeeper library:
 
 1. Add a new book:
     ```bash
-    python main.py add-book --title "1984" --author "George Orwell" --year 1949 --genres 1,2
+    python main.py add-book --title "title of the book" --author "author's name" --year 1949 --genres 1,2
     ```
 
    Adds a new book with the specified title, author, year, and genres.
