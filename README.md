@@ -153,7 +153,7 @@ Here are the main CLI commands available for managing your ReadKeeper library:
 3. Update book:
 
     ```bash
-    python main.py update-book --id 1 
+    python main.py update-book --id 1
     ```
 
     Updates the neccessary details of the book with the specified ID.
