@@ -6,20 +6,22 @@ from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 
 class Author(Base):
-    __tablename__ = 'authors'
+    __tablename__ = 'authors' # keeping it simple
     
+    # basic author info 
     id = Column(Integer, primary_key=True)
-    name = Column(String, nullable=False)
+    name = Column(String, nullable=False) # this part should probably add unique=True
     
     # One-to-many relationship - links specific author to their books lol
     books = relationship('Book', back_populates='author')
 
     def __repr__(self):
-        return f"<Author(name={self.name})>"
+        return f"<Author(name={self.name})>" # for debugging
 
-    # ORM Methods - Might consider spliting this into a separate file
+    # ORM Methods - Might consider spliting this into a separate file?
     @classmethod
     def create(cls, session, name):
+        # quick way to add new authors
         author = cls(name=name)
         session.add(author)
         session.commit()
@@ -36,10 +38,12 @@ class Author(Base):
 
     @classmethod
     def get_all(cls, session):
+        # return everything
         return session.query(cls).all()
 
     @classmethod
     def find_by_id(cls, session, author_id):
+        # simple lookup
         return session.query(cls).get(author_id)
 
 
@@ -47,16 +51,16 @@ class Genre(Base):
     __tablename__ = 'genres'
     
     id = Column(Integer, primary_key=True)
-    name = Column(String, nullable=False)
+    name = Column(String, nullable=False) # should add unique constraint ?
     
-    # Many-to-many relationship-Books to many genres- kind of tricky
+    # Many-to-many relationship-Books to many genres
     books = relationship("Book", secondary="book_genres", back_populates="genres")
 
 
     def __repr__(self):
         return f"<Genre(name={self.name})>"
 
-    # ORM Methods
+    
     @classmethod
     def create(cls, session, name):
         genre = cls(name=name)
@@ -102,7 +106,7 @@ class Book(Base):
     
     @classmethod
     def create(cls, session, title, publication_year, author_id, genre_ids):
-        # Create new book instance
+        # Creates new book instance
         book = cls(title=title, publication_year=publication_year, author_id=author_id)
         session.add(book)
         session.commit()
@@ -110,13 +114,14 @@ class Book(Base):
         # This Adds genres to a book 
         for genre_id in genre_ids:
             genre = session.query(Genre).get(genre_id)
-            if genre: # makes sure genre exists]
+            if genre: # makes sure genre exists] maybe should raise error?
                 book.genres.append(genre)
         session.commit() # commit again for genres
         return book
 
     @classmethod
     def delete(cls, session, book_id):
+        # now this is a straightfoward delete
         book = session.query(cls).get(book_id)
         if book:
             session.delete(book)
@@ -138,13 +143,10 @@ class Book(Base):
         if not book:
             return None
 
-        # Updates whatever fields passed
-        if title:
-            book.title = title
-        if publication_year:
-            book.publication_year = publication_year
-        if author_id:
-            book.author_id = author_id
+        # Updates whatever fields are passed
+        if title: book.title = title 
+        if publication_year: book.publication_year = publication_year
+        if author_id: book.author_id = author_id
         # genre updates still - quite annoying to handle
         if genre_ids is not None:
             book.genres.clear() # resets genres
@@ -170,5 +172,5 @@ engine = create_engine(DATABASE_URL)
 Session = sessionmaker(bind=engine)
 
 def create_tables():
-    # Creates all tables - run this when setting up db
+    # Creates all tables - run this when setting up db, once though!
     Base.metadata.create_all(engine)
