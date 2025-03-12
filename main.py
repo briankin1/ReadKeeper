@@ -1,6 +1,6 @@
-# CLI file for my personal book collection
+# CLI file for my ReadKeeper
 
-import click     # 
+import click     
 from models import Author, Book, Genre, Session, engine, create_tables
 from sqlalchemy.orm import sessionmaker
 
@@ -71,7 +71,7 @@ def update_book(id, title, author, year, genres):
     book.author.name = author  
     book.publication_year = year
 
-    # deal with genres only if provided
+    # deals with genres only if provided
     if genres:
         genre_ids = [int(genre_id.strip()) for genre_id in genres.split(',')]
         genres_to_add = session.query(Genre).filter(Genre.id.in_(genre_ids)).all()
@@ -166,5 +166,5 @@ if __name__ == '__main__':
 # IDEAS i MIGHT have to do later
 #- add search functionality
 #- fix the weird authour update stuff
-#- add better error handling
+#- add better error logging
 
