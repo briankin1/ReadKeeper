@@ -38,12 +38,12 @@ class Author(Base):
 
     @classmethod
     def get_all(cls, session):
-        # return everything
+        # returns everything
         return session.query(cls).all()
 
     @classmethod
     def find_by_id(cls, session, author_id):
-        # simple lookup
+        # simple lookup by id
         return session.query(cls).get(author_id)
 
 
@@ -53,7 +53,7 @@ class Genre(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False) # should add unique constraint ?
     
-    # Many-to-many relationship-Books to many genres
+    # Many-to-many relationship- links books to many genres
     books = relationship("Book", secondary="book_genres", back_populates="genres")
 
 
@@ -121,7 +121,7 @@ class Book(Base):
 
     @classmethod
     def delete(cls, session, book_id):
-        # now this is a straightfoward delete
+        # now this is a straightforward delete
         book = session.query(cls).get(book_id)
         if book:
             session.delete(book)
@@ -166,7 +166,7 @@ class BookGenres(Base):
     book_id = Column(Integer, ForeignKey('books.id'), primary_key=True)
     genre_id = Column(Integer, ForeignKey('genres.id'), primary_key=True)
 
-DATABASE_URL = "sqlite:///readkeeer.db"   # my database url
+DATABASE_URL = "sqlite:///readkeeer.db"   # my database url here
 
 engine = create_engine(DATABASE_URL)
 Session = sessionmaker(bind=engine)
