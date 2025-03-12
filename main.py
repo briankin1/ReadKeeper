@@ -130,7 +130,7 @@ def list_genres():
         for genre in genres:
             click.echo(f"Genre: {genre.name}") # can maybe add id here too?
     else:
-        click.echo("No genres yet!")
+        click.echo("No genres yet!") # just incase
 
 
 @click.command()

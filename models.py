@@ -11,7 +11,7 @@ class Author(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
     
-    # One-to-many relationship - link authors to their books lol
+    # One-to-many relationship - links specific author to their books lol
     books = relationship('Book', back_populates='author')
 
     def __repr__(self):
@@ -99,7 +99,7 @@ class Book(Base):
         #added author name for debbugging output
         return f"<Book(title={self.title}, year={self.publication_year}, author={self.author.name})>"
 
-    # ORM Methods
+    
     @classmethod
     def create(cls, session, title, publication_year, author_id, genre_ids):
         # Create new book instance
@@ -138,7 +138,7 @@ class Book(Base):
         if not book:
             return None
 
-        # Updates whatever fields padssed
+        # Updates whatever fields passed
         if title:
             book.title = title
         if publication_year:
@@ -157,7 +157,7 @@ class Book(Base):
         return book
 
 
-# junction/association table for the many-to-many relationship btwn books $ genres
+# junction table for the many-to-many relationship btwn books $ genres
 class BookGenres(Base):
     __tablename__ = 'book_genres'
     
